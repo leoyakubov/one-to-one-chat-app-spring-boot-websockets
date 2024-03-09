@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import {useNavigate} from 'react-router-dom';
 import { Form, Input, Button, notification } from "antd";
 import { DingtalkOutlined } from "@ant-design/icons";
 import { signup } from "../util/ApiUtil";
@@ -6,12 +7,13 @@ import "./Signup.css";
 
 const Signup = (props) => {
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (localStorage.getItem("accessToken") !== null) {
-      props.history.push("/");
+      navigate("/");
     }
-  }, []);
+  }, [navigate]);
 
   const onFinish = (values) => {
     setLoading(true);
@@ -22,7 +24,7 @@ const Signup = (props) => {
           description:
             "Thank you! You're successfully registered. Please Login to continue!",
         });
-        props.history.push("/login");
+        navigate("/login");
         setLoading(false);
       })
       .catch((error) => {

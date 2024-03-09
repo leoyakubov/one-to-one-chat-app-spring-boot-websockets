@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import {useNavigate} from 'react-router-dom';
 import { Form, Input, Button, Divider, notification } from "antd";
 import {
   UserOutlined,
@@ -15,10 +16,11 @@ const Signin = (props) => {
   const [loading, setLoading] = useState(false);
   const [facebookLoading, setFacebookLoading] = useState(false);
   const [test, setTest] = useState(localStorage.getItem("accessToken"));
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (localStorage.getItem("accessToken") !== null) {
-      props.history.push("/");
+      navigate("/");
     }
     initFacebookLogin();
   }, []);
@@ -49,7 +51,7 @@ const Signin = (props) => {
           facebookLogin(facebookLoginRequest)
             .then((response) => {
               localStorage.setItem("accessToken", response.accessToken);
-              props.history.push("/");
+              navigate("/");
               setFacebookLoading(false);
             })
             .catch((error) => {
@@ -81,7 +83,7 @@ const Signin = (props) => {
     login(values)
       .then((response) => {
         localStorage.setItem("accessToken", response.accessToken);
-        props.history.push("/");
+        navigate("/");
         setLoading(false);
       })
       .catch((error) => {

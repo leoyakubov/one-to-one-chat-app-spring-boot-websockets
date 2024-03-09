@@ -1,24 +1,27 @@
 import { atom } from "recoil";
+import { recoilPersist } from "recoil-persist";
+
+const { persistAtom } = recoilPersist(
+  {
+    key: 'recoil-persist',
+    storage: localStorage
+  }
+)
 
 export const loggedInUser = atom({
   key: "loggedInUser",
   default: {},
-  persistence_UNSTABLE: {
-    type: "loggedInUser",
-  },
+  effects_UNSTABLE: [persistAtom], 
 });
 
 export const chatActiveContact = atom({
   key: "chatActiveContact",
-  persistence_UNSTABLE: {
-    type: "chatActiveContact",
-  },
+  default: {},
+  effects_UNSTABLE: [persistAtom], 
 });
 
 export const chatMessages = atom({
   key: "chatMessages",
   default: [],
-  persistence_UNSTABLE: {
-    type: "chatMessages",
-  },
+  effects_UNSTABLE: [persistAtom], 
 });

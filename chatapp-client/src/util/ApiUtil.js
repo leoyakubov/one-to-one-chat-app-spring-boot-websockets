@@ -1,7 +1,7 @@
 const AUTH_SERVICE = "http://localhost:8081";
 const CHAT_SERVICE = "http://localhost:8080";
 
-const request = (options) => {
+const request = async (options) => {
   const headers = new Headers();
 
   if (options.setContentType !== false) {
@@ -18,14 +18,12 @@ const request = (options) => {
   const defaults = { headers: headers };
   options = Object.assign({}, defaults, options);
 
-  return fetch(options.url, options).then((response) =>
-    response.json().then((json) => {
-      if (!response.ok) {
-        return Promise.reject(json);
-      }
-      return json;
-    })
-  );
+  const response = await fetch(options.url, options);
+  const json = await response.json();
+  if (!response.ok) {
+    return Promise.reject(json);
+  }
+  return json;
 };
 
 export function login(loginRequest) {

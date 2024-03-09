@@ -12,6 +12,7 @@ const { Meta } = Card;
 const Profile = (props) => {
   const [currentUser, setLoggedInUser] = useRecoilState(loggedInUser);
   const navigate = useNavigate();
+  
   useEffect(() => {
     if (localStorage.getItem("accessToken") === null) {
       navigate("/login");

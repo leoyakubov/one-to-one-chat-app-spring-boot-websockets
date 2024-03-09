@@ -1,26 +1,20 @@
 import React from "react";
-import {createRoot} from "react-dom/client";
-import {StrictMode} from "react";
-
-import {recoilPersist} from "recoil-persist";
-import {RecoilRoot} from 'recoil';
+import { createRoot } from "react-dom/client";
+import { StrictMode } from "react";
+import { RecoilRoot } from 'recoil';
 
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
-const { RecoilPersist, updateState } = recoilPersist([], {
-  key: "recoil-persist",
-  storage: sessionStorage,
-});
+
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
 root.render(
   <StrictMode>
-    <RecoilRoot initializeState={updateState}>
-      {/* <RecoilPersist/> */}
-      <App/>
+    <RecoilRoot>
+      <App />
     </RecoilRoot>
   </StrictMode>
 );
