@@ -57,12 +57,12 @@ const Chat = (props) => {
   const onMessageReceived = useCallback((msg) => {
     const notification = JSON.parse(msg.body);
     console.log("Message received: ", notification);
-    const active = JSON.parse(sessionStorage.getItem("recoil-persist")).chatActiveContact;
+    const active = JSON.parse(localStorage.getItem("recoil-persist")).chatActiveContact;
     console.log("Active contact: ", active);
 
     if (active.id === notification.senderId) {
       findChatMessage(notification.id).then((message) => {
-        const newMessages = JSON.parse(sessionStorage.getItem("recoil-persist")).chatMessages;
+        const newMessages = JSON.parse(localStorage.getItem("recoil-persist")).chatMessages;
         newMessages.push(message);
         setMessages(newMessages);
       });
