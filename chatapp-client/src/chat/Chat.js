@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button, message } from "antd";
 import {
   getUsers,
@@ -16,13 +16,11 @@ import {
 import ScrollToBottom from "react-scroll-to-bottom";
 import "./Chat.css";
 
-console.log("Chat main");
+console.log("Loaded Chat component");
 
 var stompClient = null;
 
 const Chat = (props) => {
-  console.log("Chat0");
-
   const currentUser = useRecoilValue(loggedInUser);
   const navigate = useNavigate();
   const [text, setText] = useState("");
@@ -30,14 +28,15 @@ const Chat = (props) => {
   const [activeContact, setActiveContact] = useRecoilState(chatActiveContact);
   const [messages, setMessages] = useRecoilState(chatMessages);
 
-  console.log("Chat1");
+  console.log("Inside Chat component");
 
   const loadContacts = useCallback(() => {
-    console.log("Chat loadContacts");
+    console.log("Loading contacts...");
     const promise = getUsers().then((users) =>
       users.map((contact) =>
         countNewMessages(contact.id, currentUser.id).then((count) => {
           contact.newMessages = count;
+          console.log("Loaded contacts. Meesage count: " + count);
           return contact;
         })
       )
@@ -46,17 +45,20 @@ const Chat = (props) => {
     promise.then((promises) =>
       Promise.all(promises).then((users) => {
         setContacts(users);
+        console.log("Active contact: ", activeContact);
+        console.log("Users: ", users);
         if (activeContact === undefined && users.length > 0) {
           setActiveContact(users[0]);
         }
       })
     );
-  },[activeContact, setContacts, setActiveContact, currentUser.id]);
+  }, [activeContact, setContacts, setActiveContact, currentUser.id]);
 
   const onMessageReceived = useCallback((msg) => {
-    console.log("Chat onMessageReceived");
     const notification = JSON.parse(msg.body);
+    console.log("Message received: ", notification);
     const active = JSON.parse(sessionStorage.getItem("recoil-persist")).chatActiveContact;
+    console.log("Active contact: ", active);
 
     if (active.id === notification.senderId) {
       findChatMessage(notification.id).then((message) => {
@@ -68,7 +70,7 @@ const Chat = (props) => {
       message.info("Received a new message from " + notification.senderName);
     }
     loadContacts();
-  },[loadContacts, setMessages]);
+  }, [loadContacts, setMessages]);
 
   const sendMessage = useCallback((msg) => {
     if (msg.trim() !== "") {
@@ -80,46 +82,48 @@ const Chat = (props) => {
         content: msg,
         timestamp: new Date(),
       };
-      console.log("Chat sendMessage");
 
-      if (stompClient.status === 'CONNECTED') {
+      console.log("Message: ", message);
+      console.log("Sending it... ");
+      if (stompClient.connected) {
         stompClient.send("/app/chat", {}, JSON.stringify(message));
+        console.log("Sent message: ", message);
       }
-     
+
       const newMessages = [...messages];
       newMessages.push(message);
       setMessages(newMessages);
     }
-  },[activeContact.id, activeContact.name, currentUser.id, currentUser.name, messages, setMessages]);
+  }, [activeContact.id, activeContact.name, currentUser.id, currentUser.name, messages, setMessages]);
 
   const onConnected = useCallback(() => {
     console.log("connected");
-    console.log(currentUser);
+    console.log("currentUser: ", currentUser);
 
-    if (stompClient.status === 'CONNECTED') {
+    if (stompClient.connected) {
       stompClient.subscribe(
         "/user/" + currentUser.id + "/queue/messages",
         onMessageReceived
       );
     }
-  },[currentUser, onMessageReceived]);
+  }, [currentUser, onMessageReceived]);
 
   const onError = useCallback((err) => {
     console.log("Chat err");
     console.log(err);
-  },[]);
+  }, []);
 
   const connect = useCallback(() => {
-    console.log("Chat connect");
+    console.log("Connecting to socket...");
     const Stomp = require("stompjs");
     var SockJS = require("sockjs-client");
     SockJS = new SockJS("http://localhost:8080/ws");
     stompClient = Stomp.over(SockJS);
     stompClient.connect({}, onConnected, onError);
-  },[onConnected, onError]);
+  }, [onConnected, onError]);
 
   useEffect(() => {
-    console.log("Chat2");
+    console.log("useEffect hook 1...");
     if (localStorage.getItem("accessToken") === null) {
       navigate("/login");
     }
@@ -128,7 +132,7 @@ const Chat = (props) => {
   }, [navigate, connect, loadContacts]);
 
   useEffect(() => {
-    console.log("Chat3");
+    console.log("useEffect hook 2...");
     if (activeContact === undefined) return;
     findChatMessages(activeContact.id, currentUser.id).then((msgs) =>
       setMessages(msgs)

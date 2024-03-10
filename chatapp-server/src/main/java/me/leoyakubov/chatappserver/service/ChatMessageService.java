@@ -36,7 +36,7 @@ public class ChatMessageService {
         var messages =
                 chatId.map(cId -> repository.findByChatId(cId)).orElse(new ArrayList<>());
 
-        if(messages.size() > 0) {
+        if(!messages.isEmpty()) {
             updateStatuses(senderId, recipientId, MessageStatus.DELIVERED);
         }
 

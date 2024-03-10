@@ -2,7 +2,7 @@ spring:
   data:
     mongodb:
       database: spring-boot-jwt-auth
-      port: 27018
+      port: 27017
 
   mongodb:
     embedded:
