@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import {useNavigate} from 'react-router-dom';
-import { Form, Input, Button, notification } from "antd";
 import { DingtalkOutlined } from "@ant-design/icons";
+import { Button, Form, Input, notification } from "antd";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import { signup } from "../util/ApiUtil";
 import "./Signup.css";
 
-const Signup = (props) => {
+const Signup = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 

@@ -1,11 +1,11 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
+import "./App.css";
+import Chat from "./chat/Chat";
+import Profile from "./profile/Profile";
 import Signin from "./signin/Signin";
 import Signup from "./signup/Signup";
-import Profile from "./profile/Profile";
-import Chat from "./chat/Chat";
-import "./App.css";
 
 export const AppContext = React.createContext();
 

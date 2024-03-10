@@ -1,26 +1,26 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { useNavigate } from 'react-router-dom';
 import { Button, message } from "antd";
+import React, { useCallback, useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import ScrollToBottom from "react-scroll-to-bottom";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
-  getUsers,
-  countNewMessages,
-  findChatMessages,
-  findChatMessage,
-} from "../util/ApiUtil";
-import { useRecoilValue, useRecoilState } from "recoil";
-import {
-  loggedInUser,
   chatActiveContact,
   chatMessages,
+  loggedInUser,
 } from "../atom/globalState";
-import ScrollToBottom from "react-scroll-to-bottom";
+import {
+  countNewMessages,
+  findChatMessage,
+  findChatMessages,
+  getUsers,
+} from "../util/ApiUtil";
 import "./Chat.css";
 
 console.log("Loaded Chat component");
 
 var stompClient = null;
 
-const Chat = (props) => {
+const Chat = () => {
   const currentUser = useRecoilValue(loggedInUser);
   const navigate = useNavigate();
   const [text, setText] = useState("");
@@ -117,7 +117,7 @@ const Chat = (props) => {
     console.log("Connecting to socket...");
     const Stomp = require("stompjs");
     var SockJS = require("sockjs-client");
-    SockJS = new SockJS("http://localhost:8080/ws");
+    SockJS = new SockJS("http://localhost:8080/ws"); // env
     stompClient = Stomp.over(SockJS);
     stompClient.connect({}, onConnected, onError);
   }, [onConnected, onError]);

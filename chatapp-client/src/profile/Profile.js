@@ -1,15 +1,15 @@
+import { LogoutOutlined } from "@ant-design/icons";
+import { Avatar, Card } from "antd";
 import React, { useEffect } from "react";
-import {useNavigate} from 'react-router-dom';
-import { Card, Avatar } from "antd";
+import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from "recoil";
 import { loggedInUser } from "../atom/globalState";
-import { LogoutOutlined } from "@ant-design/icons";
 import { getCurrentUser } from "../util/ApiUtil";
 import "./Profile.css";
 
 const { Meta } = Card;
 
-const Profile = (props) => {
+const Profile = () => {
   const [currentUser, setLoggedInUser] = useRecoilState(loggedInUser);
   const navigate = useNavigate();
   
@@ -35,6 +35,7 @@ const Profile = (props) => {
     navigate("/login");
   };
 
+  // ADD link to chat when logged in
   return (
     <div className="profile-container">
       <Card

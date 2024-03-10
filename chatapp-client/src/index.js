@@ -1,13 +1,10 @@
-import React from "react";
+import React, { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { StrictMode } from "react";
 import { RecoilRoot } from 'recoil';
 
-import "./index.css";
 import App from "./App";
+import "./index.css";
 import * as serviceWorker from "./serviceWorker";
-
-
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);

@@ -1,6 +1,9 @@
 const AUTH_SERVICE = "http://localhost:8081";
 const CHAT_SERVICE = "http://localhost:8080";
 
+// move to const?
+// accessToken etc
+
 const request = async (options) => {
   const headers = new Headers();
 

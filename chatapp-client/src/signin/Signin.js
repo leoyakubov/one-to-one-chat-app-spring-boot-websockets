@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
-import {useNavigate} from 'react-router-dom';
-import { Form, Input, Button, Divider, notification } from "antd";
 import {
-  UserOutlined,
-  LockOutlined,
   DingtalkOutlined,
   FacebookFilled,
+  LockOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
-import { login, facebookLogin } from "../util/ApiUtil";
+import { Button, Divider, Form, Input, notification } from "antd";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import { facebookLogin, login } from "../util/ApiUtil";
 import "./Signin.css";
 
 /*global FB*/
 
-const Signin = (props) => {
+const Signin = () => {
   const [loading, setLoading] = useState(false);
   const [facebookLoading, setFacebookLoading] = useState(false);
   const [test, setTest] = useState(localStorage.getItem("accessToken"));
