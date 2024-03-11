@@ -21,3 +21,11 @@
 .ant-card-meta-description {
   font-size: 14px;
 }
+
+.chat-container {
+  /* height: 100vh; */
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

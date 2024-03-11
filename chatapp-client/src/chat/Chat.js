@@ -16,7 +16,7 @@ import {
 } from "../util/ApiUtil";
 import "./Chat.css";
 
-console.log("Loaded Chat component");
+console.debug("Chat component");
 
 var stompClient = null;
 
@@ -36,11 +36,15 @@ const Chat = () => {
       users.map((contact) =>
         countNewMessages(contact.id, currentUser.id).then((count) => {
           contact.newMessages = count;
-          console.log("Loaded contacts. Meesage count: " + count);
+          console.log("Loaded contacts. Messages count: ", count);
           return contact;
         })
       )
-    );
+    ).catch((error) => {
+      console.error(error);
+      localStorage.removeItem("accessToken");
+      navigate("/login");
+    });
 
     promise.then((promises) =>
       Promise.all(promises).then((users) => {
@@ -52,7 +56,7 @@ const Chat = () => {
         }
       })
     );
-  }, [activeContact, setContacts, setActiveContact, currentUser.id]);
+  }, [navigate, activeContact, setContacts, setActiveContact, currentUser.id]);
 
   const onMessageReceived = useCallback((msg) => {
     const notification = JSON.parse(msg.body);
@@ -87,7 +91,7 @@ const Chat = () => {
       console.log("Sending it... ");
       if (stompClient.connected) {
         stompClient.send("/app/chat", {}, JSON.stringify(message));
-        console.log("Sent message: ", message);
+        console.log("Message sent: ", message);
       }
 
       const newMessages = [...messages];
@@ -109,8 +113,7 @@ const Chat = () => {
   }, [currentUser, onMessageReceived]);
 
   const onError = useCallback((err) => {
-    console.log("Chat err");
-    console.log(err);
+    console.log("Error on connect: ", err);
   }, []);
 
   const connect = useCallback(() => {
@@ -199,7 +202,7 @@ const Chat = () => {
             ))}
           </ul>
         </div>
-        <div id="bottom-bar">
+        {/* <div id="bottom-bar">
           <button id="addcontact">
             <i class="fa fa-user fa-fw" aria-hidden="true"></i>{" "}
             <span>Profile</span>
@@ -208,7 +211,7 @@ const Chat = () => {
             <i class="fa fa-cog fa-fw" aria-hidden="true"></i>{" "}
             <span>Settings</span>
           </button>
-        </div>
+        </div> */}
       </div>
       <div class="content">
         <div class="contact-profile">
@@ -222,7 +225,7 @@ const Chat = () => {
                 {msg.senderId !== currentUser.id && (
                   <img src={activeContact.profilePicture} alt="" />
                 )}
-                <p>{msg.content}</p>
+                <p>{msg.content}<br/></p>
               </li>
             ))}
           </ul>
@@ -244,12 +247,15 @@ const Chat = () => {
             />
 
             <Button
-              icon={<i class="fa fa-paper-plane" aria-hidden="true"></i>}
+            type="primary"
+            size="small"
+              // icon={<i class="fa fa-paper-plane" aria-hidden="true"></i>}
               onClick={() => {
                 sendMessage(text);
                 setText("");
-              }}
-            />
+              }}>
+              Send
+              </Button>
           </div>
         </div>
       </div>

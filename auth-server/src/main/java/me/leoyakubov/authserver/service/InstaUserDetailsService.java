@@ -16,7 +16,6 @@ public class InstaUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
         return userService
                 .findByUsername(username)
                 .map(AuthUserDetails::new)

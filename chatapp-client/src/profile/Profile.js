@@ -1,6 +1,6 @@
 import { LogoutOutlined } from "@ant-design/icons";
-import { Avatar, Card } from "antd";
-import React, { useEffect } from "react";
+import { Avatar, Card, Button } from "antd";
+import React, { useCallback, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from "recoil";
 import { loggedInUser } from "../atom/globalState";
@@ -12,15 +12,8 @@ const { Meta } = Card;
 const Profile = () => {
   const [currentUser, setLoggedInUser] = useRecoilState(loggedInUser);
   const navigate = useNavigate();
-  
-  useEffect(() => {
-    if (localStorage.getItem("accessToken") === null) {
-      navigate("/login");
-    }
-    loadCurrentUser();
-  }, []);
 
-  const loadCurrentUser = () => {
+  const loadCurrentUser = useCallback(() => {
     getCurrentUser()
       .then((response) => {
         setLoggedInUser(response);
@@ -28,31 +21,44 @@ const Profile = () => {
       .catch((error) => {
         console.log(error);
       });
-  };
+  },[setLoggedInUser]);
 
   const logout = () => {
     localStorage.removeItem("accessToken");
     navigate("/login");
   };
 
-  // ADD link to chat when logged in
+  useEffect(() => {
+    if (localStorage.getItem("accessToken") === null) {
+      navigate("/login");
+    }
+    loadCurrentUser();
+  }, [navigate, loadCurrentUser]);
+
   return (
-    <div className="profile-container">
-      <Card
-        style={{ width: 420, border: "1px solid #e1e0e0" }}
-        actions={[<LogoutOutlined onClick={logout} />]}
-      >
-        <Meta
-          avatar={
-            <Avatar
-              src={currentUser.profilePicture}
-              className="user-avatar-circle"
-            />
-          }
-          title={currentUser.name}
-          description={"@" + currentUser.username}
-        />
-      </Card>
+    <div id="frame">
+      <div className="profile-container">
+        <Card
+          style={{ width: 420, border: "1px solid #e1e0e0" }}
+          actions={[<LogoutOutlined onClick={logout} />]}
+        >
+          <Meta
+            avatar={
+              <Avatar
+                src={currentUser.profilePicture}
+                className="user-avatar-circle"
+              />
+            }
+            title={currentUser.name}
+            description={"@" + currentUser.username}
+          />
+        </Card>
+      </div>
+      <div className="chat-container">
+        <Button type="primary" onClick={() => navigate("/chat")}>
+          Open Chat
+        </Button>
+      </div>
     </div>
   );
 };
