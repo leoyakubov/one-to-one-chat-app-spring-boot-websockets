@@ -202,16 +202,16 @@ const Chat = () => {
             ))}
           </ul>
         </div>
-        {/* <div id="bottom-bar">
-          <button id="addcontact">
+        <div id="bottom-bar">
+          <button id="addcontact" onClick={() => navigate("/")}>
             <i class="fa fa-user fa-fw" aria-hidden="true"></i>{" "}
             <span>Profile</span>
           </button>
-          <button id="settings">
+          {/* <button id="settings">
             <i class="fa fa-cog fa-fw" aria-hidden="true"></i>{" "}
             <span>Settings</span>
-          </button>
-        </div> */}
+          </button> */}
+        </div>
       </div>
       <div class="content">
         <div class="contact-profile">
