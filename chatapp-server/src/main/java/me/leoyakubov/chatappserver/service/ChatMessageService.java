@@ -1,6 +1,5 @@
 package me.leoyakubov.chatappserver.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -10,14 +9,23 @@ import me.leoyakubov.chatappserver.exception.ResourceNotFoundException;
 import me.leoyakubov.chatappserver.model.ChatMessage;
 import me.leoyakubov.chatappserver.model.MessageStatus;
 import me.leoyakubov.chatappserver.repository.ChatMessageRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ChatMessageService {
-    @Autowired private ChatMessageRepository repository;
-    @Autowired private ChatRoomService chatRoomService;
-    @Autowired private MongoOperations mongoOperations;
+    private final ChatMessageRepository repository;
+    private final ChatRoomService chatRoomService;
+    private final MongoOperations mongoOperations;
+
+    public ChatMessageService(ChatMessageRepository repository,
+                              ChatRoomService chatRoomService,
+                              MongoOperations mongoOperations) {
+        this.repository = repository;
+        this.chatRoomService = chatRoomService;
+        this.mongoOperations = mongoOperations;
+    }
 
     public ChatMessage save(ChatMessage chatMessage) {
         chatMessage.setStatus(MessageStatus.RECEIVED);
@@ -33,8 +41,7 @@ public class ChatMessageService {
     public List<ChatMessage> findChatMessages(String senderId, String recipientId) {
         var chatId = chatRoomService.getChatId(senderId, recipientId, false);
 
-        var messages =
-                chatId.map(cId -> repository.findByChatId(cId)).orElse(new ArrayList<>());
+        var messages = chatId.map(repository::findByChatId).orElse(new ArrayList<>());
 
         if(!messages.isEmpty()) {
             updateStatuses(senderId, recipientId, MessageStatus.DELIVERED);

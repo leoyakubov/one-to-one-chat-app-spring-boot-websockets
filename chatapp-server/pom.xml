@@ -18,6 +18,8 @@
 
 	<properties>
 		<java.version>21</java.version>
+
+        <de.flapdoodle.embed.mongo.spring30x.version>4.11.0</de.flapdoodle.embed.mongo.spring30x.version>
 		<lombok.version>1.18.30</lombok.version>
 	</properties>
 
@@ -49,7 +51,7 @@
 		<dependency>
 			<groupId>de.flapdoodle.embed</groupId>
 			<artifactId>de.flapdoodle.embed.mongo.spring30x</artifactId>
-			<version>4.11.0</version>
+            <version>${de.flapdoodle.embed.mongo.spring30x.version}</version>
 			<!--<scope>test</scope>-->
 		</dependency>
 
