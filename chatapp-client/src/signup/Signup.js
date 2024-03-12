@@ -3,6 +3,7 @@ import { Button, Form, Input, notification } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { signup } from "../util/ApiUtil";
+import { ACCESS_TOKEN } from "../util/constants";
 import "./Signup.css";
 
 const Signup = () => {
@@ -10,7 +11,7 @@ const Signup = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem("accessToken") !== null) {
+    if (localStorage.getItem(ACCESS_TOKEN) !== null) {
       navigate("/");
     }
   }, [navigate]);

@@ -14,7 +14,7 @@ import {
   findChatMessages,
   getUsers,
 } from "../util/ApiUtil";
-import { ACCESS_TOKEN, CHAT_SERVICE_URL} from "../util/constants";
+import { ACCESS_TOKEN, CHAT_SERVICE_URL, RECOIL_PERSIST} from "../util/constants";
 import "./Chat.css";
 
 console.debug("Chat component");
@@ -62,12 +62,12 @@ const Chat = () => {
   const onMessageReceived = useCallback((msg) => {
     const notification = JSON.parse(msg.body);
     console.log("Message received: ", notification);
-    const active = JSON.parse(localStorage.getItem("recoil-persist")).chatActiveContact;
+    const active = JSON.parse(localStorage.getItem(RECOIL_PERSIST)).chatActiveContact;
     console.log("Active contact: ", active);
 
     if (active.id === notification.senderId) {
       findChatMessage(notification.id).then((message) => {
-        const newMessages = JSON.parse(localStorage.getItem("recoil-persist")).chatMessages;
+        const newMessages = JSON.parse(localStorage.getItem(RECOIL_PERSIST)).chatMessages;
         newMessages.push(message);
         setMessages(newMessages);
       });

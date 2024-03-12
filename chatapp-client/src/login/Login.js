@@ -8,6 +8,7 @@ import { Button, Divider, Form, Input, notification } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { facebookLogin, login } from "../util/ApiUtil";
+import { ACCESS_TOKEN, FB_APP_ID } from "../util/constants";
 import "./Login.css";
 
 /*global FB*/
@@ -15,11 +16,11 @@ import "./Login.css";
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const [facebookLoading, setFacebookLoading] = useState(false);
-  const [test, setTest] = useState(localStorage.getItem("accessToken"));
+  const [test, setTest] = useState(localStorage.getItem(ACCESS_TOKEN));
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem("accessToken") !== null) {
+    if (localStorage.getItem(ACCESS_TOKEN) !== null) {
       navigate("/");
     }
     initFacebookLogin();
@@ -32,7 +33,7 @@ const Login = () => {
   const initFacebookLogin = () => {
     window.fbAsyncInit = function () {
       FB.init({
-        appId: "118319422120166",
+        appId: FB_APP_ID,
         autoLogAppEvents: true,
         xfbml: true,
         version: "v7.0",
@@ -50,7 +51,7 @@ const Login = () => {
           };
           facebookLogin(facebookLoginRequest)
             .then((response) => {
-              localStorage.setItem("accessToken", response.accessToken);
+              localStorage.setItem(ACCESS_TOKEN, response.accessToken);
               navigate("/");
               setFacebookLoading(false);
             })
@@ -82,7 +83,7 @@ const Login = () => {
     setLoading(true);
     login(values)
       .then((response) => {
-        localStorage.setItem("accessToken", response.accessToken);
+        localStorage.setItem(ACCESS_TOKEN, response.accessToken);
         navigate("/");
         setLoading(false);
       })

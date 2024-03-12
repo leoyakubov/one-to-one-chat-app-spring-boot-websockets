@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from "recoil";
 import { loggedInUser } from "../atom/globalState";
 import { getCurrentUser } from "../util/ApiUtil";
+import { ACCESS_TOKEN } from "../util/constants";
 import "./Profile.css";
 
 const { Meta } = Card;
@@ -24,12 +25,12 @@ const Profile = () => {
   },[setLoggedInUser]);
 
   const logout = () => {
-    localStorage.removeItem("accessToken");
+    localStorage.removeItem(ACCESS_TOKEN);
     navigate("/login");
   };
 
   useEffect(() => {
-    if (localStorage.getItem("accessToken") === null) {
+    if (localStorage.getItem(ACCESS_TOKEN) === null) {
       navigate("/login");
     }
     loadCurrentUser();

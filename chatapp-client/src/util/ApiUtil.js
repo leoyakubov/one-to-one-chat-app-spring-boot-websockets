@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN, AUTH_SERVICE_URL, CHAT_SERVICE_URL } from './constants';
+import { ACCESS_TOKEN, AUTH_SERVICE_URL, CHAT_SERVICE_URL, NO_TOKEN_SET_ERR } from './constants';
 
 const request = async (options) => {
   const headers = new Headers();
@@ -62,7 +62,7 @@ export function getCurrentUser() {
 
 export function getUsers() {
   if (!localStorage.getItem(ACCESS_TOKEN)) {
-    return Promise.reject("No access token set.");
+    return Promise.reject(NO_TOKEN_SET_ERR);
   }
 
   return request({

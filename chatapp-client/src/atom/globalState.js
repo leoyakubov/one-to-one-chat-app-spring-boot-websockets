@@ -1,8 +1,9 @@
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
+import { RECOIL_PERSIST} from "../util/constants";
 
 const { persistAtom } = recoilPersist({
-    key: 'recoil-persist',
+    key: 'RECOIL_PERSIST',
     storage: localStorage
 });
 
