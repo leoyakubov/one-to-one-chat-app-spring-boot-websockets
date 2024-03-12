@@ -1,4 +1,4 @@
-import React, { StrictMode } from "react";
+import React from "react";
 import { createRoot } from "react-dom/client";
 import { RecoilRoot } from 'recoil';
 
@@ -9,11 +9,9 @@ import * as serviceWorker from "./serviceWorker";
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
 root.render(
-  <StrictMode>
-    <RecoilRoot>
-      <App />
-    </RecoilRoot>
-  </StrictMode>
+  <RecoilRoot>
+    <App />
+  </RecoilRoot>
 );
 
 // If you want your app to work offline and load faster, you can change

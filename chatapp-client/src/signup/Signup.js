@@ -1,5 +1,6 @@
 import { DingtalkOutlined } from "@ant-design/icons";
-import { Button, Form, Input, notification } from "antd";
+import { Button, Form, Input, Spin, notification } from "antd";
+import axios from 'axios';
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { signup } from "../util/ApiUtil";
@@ -7,14 +8,26 @@ import { ACCESS_TOKEN } from "../util/constants";
 import "./Signup.css";
 
 const Signup = () => {
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [avatarUrl, setAvatarUrl] = useState();
 
   useEffect(() => {
     if (localStorage.getItem(ACCESS_TOKEN) !== null) {
       navigate("/");
     }
+    fetchData();
   }, [navigate]);
+
+  const fetchData = () => {
+    axios.get("https://source.unsplash.com/random?animal")
+      .then((data) => {
+        const result = data.request.responseURL;
+        console.log(result);
+        setAvatarUrl(result);
+        setLoading(false);
+      });
+  };
 
   const onFinish = (values) => {
     setLoading(true);
@@ -39,6 +52,11 @@ const Signup = () => {
   };
 
   return (
+    loading ? 
+      <div className="login-container">
+        <Spin tip="Loading" size="large" />
+      </div>
+    :
     <div className="login-container">
       <DingtalkOutlined style={{ fontSize: 50 }} />
       <Form
@@ -73,6 +91,7 @@ const Signup = () => {
         </Form.Item>
         <Form.Item
           name="profilePicUrl"
+          initialValue={avatarUrl}
           rules={[
             {
               required: true,

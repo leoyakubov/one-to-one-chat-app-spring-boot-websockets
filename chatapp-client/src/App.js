@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import "./App.css";
+import 'antd/dist/reset.css';
 import Chat from "./chat/Chat";
 import Login from "./login/Login";
 import Profile from "./profile/Profile";
