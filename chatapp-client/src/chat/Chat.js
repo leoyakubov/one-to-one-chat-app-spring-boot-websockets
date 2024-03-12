@@ -75,7 +75,7 @@ const Chat = () => {
       message.info("Received a new message from " + notification.senderName);
     }
     loadContacts();
-  }, [loadContacts, setMessages]);
+  }, [setMessages, loadContacts]);
 
   const sendMessage = useCallback((msg) => {
     if (msg.trim() !== "") {
@@ -127,22 +127,17 @@ const Chat = () => {
   }, [onConnected, onError]);
 
   useEffect(() => {
-    console.log("useEffect hook 1...");
+    console.log("useEffect hook...");
     if (localStorage.getItem(ACCESS_TOKEN) === null) {
       navigate("/login");
     }
-    connect();
-    loadContacts();
-  }, [navigate, connect, loadContacts]);
-
-  useEffect(() => {
-    console.log("useEffect hook 2...");
-    if (activeContact === undefined) return;
+      if (activeContact === undefined) return;
     findChatMessages(activeContact.id, currentUser.id).then((msgs) =>
       setMessages(msgs)
     );
+    connect();
     loadContacts();
-  }, [activeContact, currentUser.id, loadContacts, setMessages]);
+  }, [navigate, connect, activeContact, currentUser.id, loadContacts, setMessages]);
 
   return (
     <div id="frame">
