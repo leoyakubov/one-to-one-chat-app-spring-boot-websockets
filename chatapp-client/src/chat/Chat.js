@@ -14,6 +14,7 @@ import {
   findChatMessages,
   getUsers,
 } from "../util/ApiUtil";
+import { ACCESS_TOKEN, CHAT_SERVICE_URL} from "../util/constants";
 import "./Chat.css";
 
 console.debug("Chat component");
@@ -42,7 +43,7 @@ const Chat = () => {
       )
     ).catch((error) => {
       console.error(error);
-      localStorage.removeItem("accessToken");
+      localStorage.removeItem(ACCESS_TOKEN);
       navigate("/login");
     });
 
@@ -120,14 +121,14 @@ const Chat = () => {
     console.log("Connecting to socket...");
     const Stomp = require("stompjs");
     var SockJS = require("sockjs-client");
-    SockJS = new SockJS("http://localhost:8080/ws"); // env
+    SockJS = new SockJS(CHAT_SERVICE_URL + "/ws");
     stompClient = Stomp.over(SockJS);
     stompClient.connect({}, onConnected, onError);
   }, [onConnected, onError]);
 
   useEffect(() => {
     console.log("useEffect hook 1...");
-    if (localStorage.getItem("accessToken") === null) {
+    if (localStorage.getItem(ACCESS_TOKEN) === null) {
       navigate("/login");
     }
     connect();
@@ -225,7 +226,7 @@ const Chat = () => {
                 {msg.senderId !== currentUser.id && (
                   <img src={activeContact.profilePicture} alt="" />
                 )}
-                <p>{msg.content}<br/></p>
+                <p>{msg.content}<br /></p>
               </li>
             ))}
           </ul>
@@ -247,15 +248,15 @@ const Chat = () => {
             />
 
             <Button
-            type="primary"
-            size="small"
+              type="primary"
+              size="small"
               // icon={<i class="fa fa-paper-plane" aria-hidden="true"></i>}
               onClick={() => {
                 sendMessage(text);
                 setText("");
               }}>
               Send
-              </Button>
+            </Button>
           </div>
         </div>
       </div>

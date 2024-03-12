@@ -3,8 +3,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import "./App.css";
 import Chat from "./chat/Chat";
+import Login from "./login/Login";
 import Profile from "./profile/Profile";
-import Signin from "./signin/Signin";
 import Signup from "./signup/Signup";
 
 export const AppContext = React.createContext();
@@ -16,7 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Profile/>} />
 
-          <Route path="/login" element={<Signin/>} />
+          <Route path="/login" element={<Login/>} />
 
           <Route path="/signup" element={<Signup/>} />
 

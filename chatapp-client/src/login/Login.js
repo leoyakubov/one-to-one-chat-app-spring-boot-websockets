@@ -8,11 +8,11 @@ import { Button, Divider, Form, Input, notification } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { facebookLogin, login } from "../util/ApiUtil";
-import "./Signin.css";
+import "./Login.css";
 
 /*global FB*/
 
-const Signin = () => {
+const Login = () => {
   const [loading, setLoading] = useState(false);
   const [facebookLoading, setFacebookLoading] = useState(false);
   const [test, setTest] = useState(localStorage.getItem("accessToken"));
@@ -23,7 +23,7 @@ const Signin = () => {
       navigate("/");
     }
     initFacebookLogin();
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     initFacebookLogin();
@@ -163,4 +163,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default Login;
